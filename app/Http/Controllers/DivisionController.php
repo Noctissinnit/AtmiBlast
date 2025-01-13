@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Division;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class DivisionController extends Controller
 {
@@ -23,12 +24,19 @@ class DivisionController extends Controller
         $request->validate([
             'name' => 'required|string|max:255|unique:divisions,name',
         ]);
-    
+
+        // Cek apakah tabel divisions kosong
+        if (Division::count() === 0) {
+            // Reset auto-increment ke 1
+            DB::statement('ALTER TABLE divisions AUTO_INCREMENT = 1');
+        }
+
         // Membuat Division baru
         Division::create($request->only('name'));
-    
+
         return redirect()->route('divisions.index')->with('success', 'Divisi berhasil ditambahkan.');
     }
+
     
 
     public function edit(Division $division)

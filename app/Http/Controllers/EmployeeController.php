@@ -6,6 +6,8 @@ use App\Imports\EmployeeImport;
 use App\Models\Division;
 use App\Models\Employee;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Log;
 
 class EmployeeController extends Controller
 {
@@ -40,5 +42,30 @@ class EmployeeController extends Controller
         $employee->delete();
         return redirect()->route('employees.index')->with('success', 'Employee deleted successfully!');
     }
+
+    public function importExcel(Request $request)
+    {
+        // Validasi file yang diunggah
+        $request->validate([
+            'excel' => 'required|mimes:xlsx,xls',
+        ]);
+
+        try {
+            // Proses file Excel menggunakan EmployeeImport
+            $import = Excel::import(new EmployeeImport, $request->file('excel'));
+
+            // Mengecek apakah proses impor berhasil
+            if ($import) {
+                return redirect()->route('employees.index')->with('success', 'Data berhasil diimpor!');
+            } else {
+                return redirect()->route('employees.index')->with('error', 'Gagal mengimpor data.');
+            }
+        } catch (\Exception $e) {
+            // Tangani kesalahan dengan mengembalikan pesan error
+            return redirect()->route('employees.index')->with('error', 'Terjadi kesalahan saat memproses file Excel: ' . $e->getMessage());
+        }
+    }
+
+    
     
 }

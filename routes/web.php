@@ -6,15 +6,18 @@ use App\Http\Controllers\DivisionController;
 use App\Http\Controllers\EmailController;
 use App\Http\Controllers\EmployeeController;
 
+//route homepage
+Route::get('/', function () {
+    return view('index');
+})->name('homepage');
+
 //Route Auth
-// Rute untuk menampilkan form login
-Route::get('/login', [AuthController::class, 'loginForm'])->name('login');
+Route::controller(AuthController::class)->group(function () {
+    Route::get('/login', 'loginForm')->name('login');
+    Route::post('/login', 'login')->name('login.post');
+    Route::post('/logout', 'logout')->name('logout');
+});
 
-// Rute untuk mengirim data login
-Route::post('/login', [AuthController::class, 'login'])->name('login.post');
-
-// Rute untuk logout
-Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 //Route dashboard
 Route::middleware('auth')->group(function () {
@@ -34,6 +37,7 @@ Route::get('/send-email', [EmailController::class, 'create'])->name('send-email.
 Route::post('/send-email', [EmailController::class, 'sendEmail'])->name('send-email.post');
 
 //Route Import Excel
+Route::post('/employees/import', [EmployeeController::class, 'importExcel'])->name('employees.import');
 
 
 
