@@ -3,31 +3,34 @@
 namespace App\Imports;
 
 use App\Models\Employee;
-use Maatwebsite\Excel\Concerns\ToModel;
+use Illuminate\Support\Collection;
+use Maatwebsite\Excel\Concerns\ToCollection;
 
-class EmployeeImport implements ToModel
+class EmployeeImport implements ToCollection
 {
     /**
-    * @param array $row
-    *
-    * @return \Illuminate\Database\Eloquent\Model|null
-    */
-    public function model(array $row)
+     * @return string|array
+     */
+    public function uniqueBy()
     {
-       // Abaikan baris yang tidak lengkap
-       if (empty($row['name']) || empty($row['email']) || empty($row['division_id'])) {
-        return null;
-        }
+        return 'email';
+    }
+    public function collection(Collection $rows)
+    {
+        foreach ($rows as $i => $row) {
 
-        // Abaikan jika email sudah ada
-        if (Employee::where('email', $row['email'])->exists()) {
-            return null;
+            if (empty($row['name']) || empty($row['email']) || empty($row['division_id']) ||
+                Employee::where('email', $row['email'])->exists()) {
+            }
+            try {
+                Employee::insert([
+                    'name' => $row[0],
+                    'email' => $row[1],
+                    'division_id' => $row[2],
+                ]);
+            } catch (\Exception $e) {
+                info($e->getMessage());
+            }
         }
-
-        return new Employee([
-            'name' => $row['name'],
-            'email' => $row['email'],
-            'division_id' => $row['division_id'],
-        ]);
     }
 }

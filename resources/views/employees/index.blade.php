@@ -3,7 +3,11 @@
 <script>
     $(document).ready(() => {
         $('#btn-upload').click(() => {
-            $('#btn-excel').click();
+            $('#input-excel').click();
+        });
+        $('#input-excel').change(() => {
+            if($('#input-excel').get(0).files.length === 0) return;
+            $('#form-excel').submit();
         });
     });
 </script>
@@ -22,7 +26,10 @@
             <button type="button" class="btn btn-primary w-100" id="btn-upload">Pilih File Excel</button>
 
             <!-- Input file yang disembunyikan -->
-            <input type="file" name="excel" id="btn-excel" class="form-control @error('excel') is-invalid @enderror" style="display: none;">
+            <form id="form-excel" class="hidden" action="{{ route('employees.import') }}" method="POST" enctype="multipart/form-data">
+                @csrf
+                <input type="file" name="excel" id="input-excel" class="form-control @error('excel') is-invalid @enderror" style="display: none;">
+            </form>
 
             @error('excel')
             <div class="invalid-feedback">{{ $message }}</div>
