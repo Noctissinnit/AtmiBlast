@@ -30,8 +30,8 @@
     <!-- Hero Section -->
     <header class="bg-light text-center py-5">
         <div class="container">
-            <h1 class="display-4 fw-bold">Welcome to Our Website</h1>
-            <p class="lead text-muted">Modern design. Minimal effort. Maximum impact.</p>
+            <h1 class="display-4 fw-bold">Kirim Email dulu Lee</h1>
+            <p class="lead text-muted">Kirimin emailmu ke para karyawan dan siapa aja</p>
             <a href="{{ route('login') }}" class="btn btn-primary btn-lg mt-3">Mulai</a>
         </div>
     </header>

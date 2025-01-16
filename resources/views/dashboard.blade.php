@@ -3,6 +3,23 @@
 @section('title', 'Dashboard')
 
 @section('content')
+@if (session('notification'))
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        {{ session('notification') }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+@endif
+
+<style>
+    .list-group a {
+        text-decoration: none; /* Menghilangkan underline */
+    }
+
+    .list-group a:hover {
+        text-decoration: none; /* Menghilangkan underline saat hover */
+    }
+</style>
+
 <div class="row">
     <div class="col-md-3">
         <ul class="list-group">

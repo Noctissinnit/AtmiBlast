@@ -4,55 +4,51 @@
 
 @section('content')
 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
 <script>
-   $(document).ready(function() {
-        // Inisialisasi Select2 sebagai search box
-        $('#emails').select2({
-            placeholder: $('#emails').data('placeholder'), // Placeholder untuk input
-            allowClear: true, // Tombol hapus pilihan
-            theme: "bootstrap-5", // Tema yang sesuai
-            width: 'resolve' // Sesuaikan dengan lebar elemen
-        });
-    });
-
-
-
-    $(document).ready(function() {
-        // Inisialisasi Select2
-        $('#emails').select2({
-            placeholder: "Pilih karyawan...",
-            allowClear: true,
-            theme: "bootstrap-5"
-        });
-
-        $(document).ready(function() {
-        let selectedEmailsFromDivisions = [];
+    $(document).ready(function () {
+        let selectedEmailsFromDivisions = []; // Array untuk menyimpan email yang dipilih melalui checkbox
 
         // Inisialisasi Select2
         $('#emails').select2({
             placeholder: "Pilih karyawan...",
             allowClear: true,
-            theme: "bootstrap-5"
+            theme: "bootstrap-5",
+            width: 'resolve'
         });
 
         // Ketika checkbox divisi diubah
-        $('.division-checkbox').change(function() {
+        $('.division-checkbox').change(function () {
             let emails = $(this).data('emails'); // Ambil email karyawan dari data attribute
             let isChecked = $(this).is(':checked');
 
-            // Tambahkan atau hapus email dari array
             if (isChecked) {
+                // Tambahkan email dari divisi ke array
                 selectedEmailsFromDivisions = [...new Set([...selectedEmailsFromDivisions, ...emails])];
             } else {
+                // Hapus email dari divisi yang tidak dipilih
                 selectedEmailsFromDivisions = selectedEmailsFromDivisions.filter(email => !emails.includes(email));
             }
 
-            // Simpan hasil ke input hidden
+            // Perbarui input hidden untuk menyimpan email dari divisi
             $('#emails-from-divisions').val(JSON.stringify(selectedEmailsFromDivisions));
+
+            // Tidak menampilkan email dari checkbox divisi di field Select2
+            $('#emails').find('option').each(function () {
+                if (selectedEmailsFromDivisions.includes($(this).val())) {
+                    $(this).prop('disabled', isChecked); // Disable opsi
+                } else {
+                    $(this).prop('disabled', false); // Aktifkan kembali jika tidak dipilih
+                }
+            });
+
+            $('#emails').select2(); // Refresh elemen Select2
         });
     });
 </script>
-
 
 
 <div class="card mt-3">
@@ -144,13 +140,10 @@
                             <div class="invalid-feedback mt-1">{{ $message }}</div>
                         @enderror
                     </div>
-
                 </div>
-                
+
                 <!-- Input hidden untuk menyimpan email dari divisi yang dipilih -->
                 <input type="hidden" name="emails_from_divisions" id="emails-from-divisions">
-                
-                
 
                 <div class="col-md-12">
                     <label for="pdf" class="form-label">Lampiran PDF</label>
@@ -168,4 +161,5 @@
         </form>
     </div>
 </div>
+
 @endsection
