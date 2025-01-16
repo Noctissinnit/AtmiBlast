@@ -68,8 +68,8 @@ class EmailController extends Controller
         );
     }
 
-    return redirect()->back()->with('success', 'Email berhasil dikirim!');
-
-
+    // Redirect ke halaman dashboard dengan pesan sukses
+    return redirect()->route('dashboard')->with('success', 'Email berhasil dikirim!');
 }
+ 
 }
