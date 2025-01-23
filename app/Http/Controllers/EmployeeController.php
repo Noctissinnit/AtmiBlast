@@ -6,6 +6,7 @@ use App\Imports\EmployeeImport;
 use App\Models\Division;
 use App\Models\Employee;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Log;
 
@@ -51,12 +52,18 @@ class EmployeeController extends Controller
         ]);
 
         try {
+            // Hapus semua data dari tabel employees
+            Employee::truncate();
+
+            // Reset auto-increment ID pada tabel employees
+            DB::statement('ALTER TABLE employees AUTO_INCREMENT = 1');
+
             // Proses file Excel menggunakan EmployeeImport
             $import = Excel::import(new EmployeeImport, $request->file('excel'));
 
             // Mengecek apakah proses impor berhasil
             if ($import) {
-                return redirect()->route('employees.index')->with('success', 'Data berhasil diimpor!');
+                return redirect()->route('employees.index')->with('success', 'Data berhasil diimpor dan ID dimulai dari 1!');
             } else {
                 return redirect()->route('employees.index')->with('error', 'Gagal mengimpor data.');
             }

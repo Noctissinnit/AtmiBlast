@@ -63,6 +63,7 @@
         <form action="{{ route('send-email.post') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="row g-3">
+                <!-- Nama Pengirim -->
                 <div class="col-md-6">
                     <label for="sender_name" class="form-label">Nama Pengirim</label>
                     <input type="text" name="sender_name" id="sender_name" 
@@ -72,15 +73,17 @@
                     @enderror
                 </div>
                 
-                <div class="col-md-6">
+                <!-- Email Pengirim -->
+                {{-- <div class="col-md-6">
                     <label for="sender_email" class="form-label">Email Pengirim</label>
                     <input type="email" name="sender_email" id="sender_email" 
                            class="form-control @error('sender_email') is-invalid @enderror" placeholder="Email Pengirim">
                     @error('sender_email')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
-                </div>
+                </div> --}}
 
+                <!-- Subject -->
                 <div class="col-md-12">
                     <label for="subject" class="form-label">Subject</label>
                     <input type="text" name="subject" id="subject" 
@@ -91,6 +94,7 @@
                     @enderror
                 </div>
 
+                <!-- Body -->
                 <div class="col-md-12">
                     <label for="body" class="form-label">Body</label>
                     <textarea name="body" id="body" rows="3" 
@@ -102,7 +106,7 @@
                 </div>
 
                 <div class="row">
-                    <!-- Field untuk memilih Divisi -->
+                    <!-- Divisi Selection -->
                     <div class="col-md-6">
                         <label for="divisions" class="form-label fw-bold">Pilih Divisi</label>
                         <div class="form-control p-3">
@@ -119,7 +123,7 @@
                         </div>
                     </div>
                 
-                    <!-- Field untuk memilih Karyawan Individu -->
+                    <!-- Karyawan Individu -->
                     <div class="col-md-6">
                         <label for="emails" class="form-label fw-bold">Pilih Karyawan</label>
                         <select name="emails[]" id="emails" 
@@ -145,6 +149,7 @@
                 <!-- Input hidden untuk menyimpan email dari divisi yang dipilih -->
                 <input type="hidden" name="emails_from_divisions" id="emails-from-divisions">
 
+                <!-- Upload Lampiran PDF -->
                 <div class="col-md-12">
                     <label for="pdf" class="form-label">Lampiran PDF</label>
                     <input type="file" name="pdf" id="pdf" 
