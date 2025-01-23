@@ -15,6 +15,6 @@ class Division extends Model
     // Relasi ke employee
     public function employees()
     {
-        return $this->hasMany(Employee::class, 'iddevisi'); // Menyebutkan kolom foreign key yang benar
+        return $this->hasMany(Employee::class);
     }
 }

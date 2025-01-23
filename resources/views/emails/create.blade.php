@@ -134,7 +134,7 @@
                                     @foreach($division->employees as $employee)
                                         <option value="{{ $employee->email }}" 
                                                 {{ collect(old('emails'))->contains($employee->email) ? 'selected' : '' }}>
-                                            {{ $employee->name }} ({{ $employee->email }})
+                                            {{ $employee->user->name ?? $employee->name ?? '' }} ({{ $employee->user->email ?? $employee->email ?? '' }})
                                         </option>
                                     @endforeach
                                 </optgroup>
