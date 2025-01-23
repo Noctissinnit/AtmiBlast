@@ -15,4 +15,10 @@ class Employee extends Model
     {
         return $this->belongsTo(Division::class);
     }
+
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'userid', 'id');
+    }
 }

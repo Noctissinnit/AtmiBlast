@@ -13,8 +13,10 @@ return new class extends Migration
     {
         Schema::create('employees', function (Blueprint $table) {
             $table->id(); // Primary key
-            $table->string('nis')->nullable()->change(); // NIS (unique identifier for employees)
-            $table->foreignId('userid') // Foreign key to the users table
+            $table->string('nis')->nullable(); // NIS (unique identifier for employees)
+            $table->string('name')->nullable(); // NIS (unique identifier for employees)
+            $table->string('email')->nullable(); // NIS (unique identifier for employees)
+            $table->foreignId('userid')->nullable() // Foreign key to the users table
                 ->constrained('users')
                 ->cascadeOnDelete(); // Optional: Cascade on delete
             $table->foreignId('division_id') // Foreign key to the divisions table

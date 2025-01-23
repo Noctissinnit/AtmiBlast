@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Imports\EmployeeImport;
 use App\Models\Division;
 use App\Models\Employee;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
@@ -12,8 +13,8 @@ use Illuminate\Support\Facades\Log;
 
 class EmployeeController extends Controller
 {
-    
-        public function index()
+
+    public function index()
     {
         $employees = Employee::with('division')->get();
         return view('employees.index', compact('employees'));
@@ -33,8 +34,7 @@ class EmployeeController extends Controller
             'division_id' => 'required|exists:divisions,id',
         ]);
 
-        Employee::create($request->all());
-
+        Employee::create($request->except('_token'));
         return redirect()->route('employees.index')->with('success', 'Employee added successfully!');
     }
 
@@ -72,7 +72,4 @@ class EmployeeController extends Controller
             return redirect()->route('employees.index')->with('error', 'Terjadi kesalahan saat memproses file Excel: ' . $e->getMessage());
         }
     }
-
-    
-    
 }

@@ -55,8 +55,8 @@
             @forelse($employees as $employee)
             <tr>
                 <td>{{ $loop->iteration }}</td>
-                <td>{{ $employee->name }}</td>
-                <td>{{ $employee->email }}</td>
+                <td>{{ $employee->user->name ?? $employee->name ?? '' }}</td>
+                <td>{{ $employee->user->email ?? $employee->email ?? '' }}</td>
                 <td>{{ $employee->division->name }}</td>
                 <td>
                     <form action="{{ route('employees.destroy', $employee->id) }}" method="POST">
