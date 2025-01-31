@@ -61,4 +61,11 @@ class DivisionController extends Controller
 
         return redirect()->route('divisions.index')->with('success', 'Division deleted successfully!');
     }
+
+    public function showUnits(Division $division)
+    {
+        $division->load('unit_karyas'); // Mengambil unit_karyas dalam divisi
+        return view('divisions.units', compact('division'));
+    }
+
 }

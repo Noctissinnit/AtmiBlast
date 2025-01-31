@@ -32,6 +32,7 @@ class EmployeeController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:employees',
             'division_id' => 'required|exists:divisions,id',
+            'unit_id' => 'required|exists:unit_karyas,id', // Menambahkan validasi unit_karya_id
         ]);
 
         Employee::create($request->except('_token'));

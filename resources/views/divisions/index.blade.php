@@ -32,6 +32,11 @@
                             <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?')">Delete</button>
                         </form>
                     </td>
+                    <td>
+                        <a href="{{ route('divisions.units', $division->id) }}" class="btn btn-info btn-sm">
+                            Lihat Unit Karya
+                        </a>
+                    </td>
                 </tr>
             @endforeach
         </tbody>

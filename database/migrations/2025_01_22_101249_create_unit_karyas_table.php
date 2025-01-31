@@ -13,10 +13,9 @@ return new class extends Migration
     {
         Schema::create('unit_karyas', function (Blueprint $table) {
             $table->id();
-            $table->string('nama_unit_karya');
+            $table->string('nama_unit_karya')->nullable();
+            $table->foreignId('division_id')->constrained()->onDelete('cascade');
             $table->timestamps();
-
-            
         });
     }
 

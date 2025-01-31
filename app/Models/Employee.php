@@ -9,8 +9,16 @@ class Employee extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'email', 'division_id'];
+    use HasFactory;
 
+    protected $fillable = ['name', 'email', 'division_id', 'unit_karya_id'];
+
+    // Relasi ke UnitKarya
+    public function unitKarya()
+    {
+        return $this->belongsTo(UnitKarya::class, 'unit_karya_id');
+    }
+    
     public function division()
     {
         return $this->belongsTo(Division::class);

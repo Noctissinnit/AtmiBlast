@@ -5,8 +5,6 @@ namespace App\Mail;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
-use Illuminate\Mail\Mailables\Content;
-use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
 class SendEmployeeEmail extends Mailable
@@ -38,17 +36,16 @@ class SendEmployeeEmail extends Mailable
      */
     public function build()
     {
-        // Mulai dengan mendefinisikan subjek dan view email
         $email = $this->from($this->fromEmail, $this->fromName)
                       ->subject($this->subject)
                       ->view('emails.employee_email')
                       ->with(['body' => $this->body]);
-
-        if ($this->pdfPath) {
-            $email->attach($this->pdfPath);
+    
+        // Menambahkan attachment PDF jika ada dan dapat diakses
+        if (!empty($this->pdfPath) && file_exists(storage_path("app/{$this->pdfPath}"))) {
+            $email->attach(storage_path("app/{$this->pdfPath}"));
         }
-
+    
         return $email;
     }
-
 }
