@@ -12,7 +12,8 @@ class UnitKaryaController extends Controller
     public function create()
     {
         $divisions = Division::all(); // Ambil semua divisi
-        return view('units.create', compact('divisions'));
+        $units = collect(); // Jika tidak ada divisi yang dipilih, unit tetap kosong
+        return view('units.create', compact('divisions', 'units'));
     }
 
     // Menyimpan unit karya baru ke database
@@ -35,4 +36,15 @@ class UnitKaryaController extends Controller
     
         return back()->with('error', 'Gagal menambahkan unit karya.');
     }
+    // Di Controller Anda
+    public function getUnitsByDivision($division_id)
+    {
+        // Ambil unit karya berdasarkan division_id
+        $units = UnitKarya::where('division_id', $division_id)->get();
+
+        // Kirim kembali response JSON
+        return response()->json($units);
+    }
+
+
 }

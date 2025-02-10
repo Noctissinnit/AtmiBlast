@@ -26,7 +26,7 @@ class EmailController extends Controller
         'employee_id' => 'required|exists:employees,id',
         'subject' => 'required|string',
         'message' => 'required|string',
-        'pdf' => 'nullable|mimes:pdf|max:2048', // Validasi file PDF
+        'pdf' => 'nullable|mimes:pdf|max:2048',
     ]);
 
     // Ambil karyawan berdasarkan ID yang dipilih
@@ -40,19 +40,28 @@ class EmailController extends Controller
 
     // Cek jika ada file PDF yang diunggah dan simpan file PDF ke storage
     $pdfPath = $request->file('pdf') 
-        ? $request->file('pdf')->store('attachments', 'public') // Menyimpan file PDF ke folder public/attachments
-        : null;
+    ? $request->file('pdf')->store('attachments', 'public') 
+    : null;
 
+    $pdfFullPath = $pdfPath ? storage_path("app/public/{$pdfPath}") : null;
+
+    // Debugging untuk melihat data sebelum mengirim email
+    // dd([
+    //     'pdfPath' => $pdfPath,
+    //     'fullPath' => $pdfFullPath,
+    //     'exists' => file_exists($pdfFullPath),
+    //     'isReadable' => is_readable($pdfFullPath)
+    // ]);
     // Kirim email dengan lampiran PDF jika ada
     Mail::to($employee->email)->send(new SendEmployeeEmail(
         $data['subject'], 
         $data['message'], 
-        $pdfPath ? storage_path("app/public/{$pdfPath}") : null // Menyediakan path file untuk mailable
+        $pdfPath ? storage_path("app/public/{$pdfPath}") : null
     ));
 
-    // Kembali dengan notifikasi sukses
     return back()->with('success', 'Email berhasil dikirim ke ' . $employee->name);
 }
+
     
 
     /**

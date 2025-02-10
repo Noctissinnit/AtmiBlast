@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Imports\EmployeeImport;
 use App\Models\Division;
 use App\Models\Employee;
+use App\Models\UnitKarya;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -16,14 +17,25 @@ class EmployeeController extends Controller
 
     public function index()
     {
-        $employees = Employee::with('division')->get();
+        $employees = Employee::with(['division', 'unitKarya'])->get();
         return view('employees.index', compact('employees'));
     }
 
     public function create()
     {
+         // Ambil semua divisi
+        
         $divisions = Division::all();
-        return view('employees.create', compact('divisions'));
+
+        // Jika ada divisi yang dipilih sebelumnya, ambil unit karya yang terkait dengan divisi tersebut
+        $units = collect();
+        if (old('division_id')) {
+            $units = UnitKarya::where('division_id', old('division_id'))->get();
+        }
+
+        // Mengirim data divisi dan unit karya ke tampilan
+        return view('employees.create', compact('divisions', 'units'));
+
     }
 
     public function store(Request $request)
@@ -32,11 +44,19 @@ class EmployeeController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:employees',
             'division_id' => 'required|exists:divisions,id',
-            'unit_id' => 'required|exists:unit_karyas,id', // Menambahkan validasi unit_karya_id
+            'unit_karya_id' => 'required|exists:unit_karyas,id',
         ]);
 
-        Employee::create($request->except('_token'));
+        // Simpan data employee ke database
+        Employee::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'division_id' => $request->division_id,
+            'unit_karya_id' => $request->unit_karya_id,
+        ]);
+
         return redirect()->route('employees.index')->with('success', 'Employee added successfully!');
+    
     }
 
     public function destroy(Employee $employee)

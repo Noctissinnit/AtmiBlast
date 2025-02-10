@@ -48,6 +48,7 @@
                 <th>Name</th>
                 <th>Email</th>
                 <th>Division</th>
+                <th>Unit Karya</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -57,7 +58,9 @@
                 <td>{{ $loop->iteration }}</td>
                 <td>{{ $employee->user->name ?? $employee->name ?? '' }}</td>
                 <td>{{ $employee->user->email ?? $employee->email ?? '' }}</td>
+               
                 <td>{{ $employee->division->name }}</td>
+                <td>{{ $employee->unitKarya->nama_unit_karya ?? 'No Unit Karya' }}</td>
                 <td>
                     <form action="{{ route('employees.destroy', $employee->id) }}" method="POST">
                         @csrf

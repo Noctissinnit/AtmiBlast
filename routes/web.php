@@ -6,6 +6,8 @@ use App\Http\Controllers\DivisionController;
 use App\Http\Controllers\EmailController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\UnitKaryaController;
+use App\Models\Employee;
+use App\Models\UnitKarya;
 
 // Route Homepage
 Route::get('/', function () {
@@ -52,9 +54,17 @@ Route::middleware('auth')->group(function () {
     Route::post('/email/unit', [EmailController::class, 'sendToUnit'])->name('email.sendUnit');
 
     // API untuk mendapatkan unit karya berdasarkan divisi (untuk AJAX)
-    Route::get('/get-units/{division_id}', [EmailController::class, 'getUnitsByDivision']);
+    Route::get('/units-by-division/{division_id}', [EmployeeController::class, 'getUnitsByDivision']);
 
     // Route Unit Karya
     Route::get('/units/create', [UnitKaryaController::class, 'create'])->name('units.create');
     Route::post('/units', [UnitKaryaController::class, 'store'])->name('units.store');
+
+    //Route ajax unit karya id
+    // web.php (Routes)
+    Route::get('/get-units/{division_id}', function ($division_id) {
+        $units = UnitKarya::where('division_id', $division_id)->get();
+        return response()->json(['units' => $units]);
+    });
+
 });
