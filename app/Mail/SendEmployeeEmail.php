@@ -13,18 +13,18 @@ class SendEmployeeEmail extends Mailable
 
     public $subject;
     public $body;
-    public $pdfPath;
+    public $pdf;
     public $fromEmail;
     public $fromName;
 
     /**
      * Create a new message instance.
      */
-    public function __construct($subject, $body, $pdfPath = null, $fromEmail = null, $fromName = null)
+    public function __construct($subject, $body, $pdf = null, $fromEmail = null, $fromName = null)
     {
         $this->subject = $subject;
         $this->body = $body;
-        $this->pdfPath = $pdfPath;
+        $this->pdf = $pdf;
         $this->fromEmail = $fromEmail ?? config('mail.from.address');
         $this->fromName = $fromName ?? config('mail.from.name');
     }
@@ -42,8 +42,8 @@ class SendEmployeeEmail extends Mailable
                       ->with(['body' => $this->body]);
     
         // Menambahkan attachment PDF jika ada dan dapat diakses
-        if (!empty($this->pdfPath) && file_exists(storage_path("app/{$this->pdfPath}"))) {
-            $email->attach(storage_path("app/{$this->pdfPath}"));
+        if ($this->pdf) {
+            $email->attach(storage_path('app/'.$this->pdf));
         }
     
         return $email;

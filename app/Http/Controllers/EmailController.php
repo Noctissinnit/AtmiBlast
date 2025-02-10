@@ -39,11 +39,9 @@ class EmailController extends Controller
     ];
 
     // Cek jika ada file PDF yang diunggah dan simpan file PDF ke storage
-    $pdfPath = $request->file('pdf') 
-    ? $request->file('pdf')->store('attachments', 'public') 
+    $pdf = $request->file('pdf') 
+    ? $request->file('pdf')->store('attachments') 
     : null;
-
-    $pdfFullPath = $pdfPath ? storage_path("app/public/{$pdfPath}") : null;
 
     // Debugging untuk melihat data sebelum mengirim email
     // dd([
@@ -53,10 +51,10 @@ class EmailController extends Controller
     //     'isReadable' => is_readable($pdfFullPath)
     // ]);
     // Kirim email dengan lampiran PDF jika ada
-    Mail::to($employee->email)->send(new SendEmployeeEmail(
+    Mail::to($employee->user->email ?? $employee->email)->send(new SendEmployeeEmail(
         $data['subject'], 
-        $data['message'], 
-        $pdfPath ? storage_path("app/public/{$pdfPath}") : null
+        $data['message'],
+        $pdf
     ));
 
     return back()->with('success', 'Email berhasil dikirim ke ' . $employee->name);
