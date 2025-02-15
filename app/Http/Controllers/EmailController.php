@@ -7,6 +7,7 @@ use App\Models\Division;
 use App\Models\Employee;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Storage;
 
 class EmailController extends Controller
 {
@@ -57,7 +58,7 @@ class EmailController extends Controller
         $pdf
     ));
 
-    return back()->with('success', 'Email berhasil dikirim ke ' . $employee->name);
+    return redirect()->route('dashboard')->with('success', 'Email berhasil dikirim ke ' . $employee->name);
 }
 
     
@@ -80,33 +81,45 @@ class EmailController extends Controller
             'division_id' => 'required|exists:divisions,id',
             'subject' => 'required|string',
             'message' => 'required|string',
-            'pdf' => 'nullable|mimes:pdf|max:2048', // Validasi file PDF
+            'pdf' => 'nullable|mimes:pdf|max:2048',
         ]);
-
-        // Ambil semua karyawan dalam divisi yang dipilih
-        $employees = Employee::where('division_id', $request->division_id)->get();
-
+        
         $data = [
             'subject' => $request->subject,
             'message' => $request->message,
         ];
-
-        // Cek jika ada file PDF yang diunggah
-        $pdfPath = $request->file('pdf')
-            ? $request->file('pdf')->store('attachments', 'public') 
-            : null;
-
-        foreach ($employees as $employee) {
-            if ($employee->email) {
-                Mail::to($employee->email)->send(new SendEmployeeEmail(
-                    $data['subject'],
-                    $data['message'],
-                    $pdfPath ? storage_path("app/public/{$pdfPath}") : null
-                ));
-            }
+        
+        $employees = Employee::where('division_id', $request->division_id)->get();
+        
+        // Cek apakah ada karyawan dalam divisi
+        if ($employees->isEmpty()) {
+            return back()->with('error', 'Tidak ada karyawan dalam divisi yang dipilih.');
         }
-
-        return back()->with('success', 'Email berhasil dikirim ke semua karyawan dalam divisi.');
+        
+        // Ambil semua email karyawan yang tidak kosong
+        $emails = $employees->pluck('email')->filter()->toArray();
+        
+        // Cek apakah ada email yang valid
+        if (empty($emails)) {
+            return back()->with('error', 'Tidak ada karyawan dengan email yang valid dalam divisi ini.');
+        }
+        
+        // Simpan PDF jika ada
+        $pdf = $request->file('pdf') 
+        ? $request->file('pdf')->store('attachments') 
+        : null;
+        
+        // Kirim email menggunakan Bcc
+        Mail::bcc($emails)->send(new SendEmployeeEmail(
+            $data['subject'], 
+            $data['message'], 
+            $pdf
+        ));
+        
+        return redirect()->route('dashboard')->with('success', 'Email berhasil dikirim ke semua karyawan dalam unit karya.');
+        
+        
+        
     }
 
 
@@ -144,15 +157,16 @@ class EmailController extends Controller
                          ->get();
 
     // Cek jika ada file PDF yang diunggah
-    $pdfPath = $request->file('pdf') ? $request->file('pdf')->store('attachments', 'public') : null;
-
+    $pdf = $request->file('pdf') 
+        ? $request->file('pdf')->store('attachments') 
+        : null;
     // Kirim email ke setiap karyawan
     foreach ($employees as $employee) {
-        Mail::to($employee->email)->send(new SendEmployeeEmail($data['subject'], $data['message'], $pdfPath ? storage_path("app/{$pdfPath}") : null));
+        Mail::to($employee->email)->send(new SendEmployeeEmail($data['subject'], $data['message'], $pdf));
     }
 
     // Kembali dengan notifikasi sukses
-    return back()->with('success', 'Email berhasil dikirim ke semua karyawan dalam unit karya.');
+    return redirect()->route('dashboard')->with('success', 'Email berhasil dikirim ke semua karyawan dalam unit karya.');
 }
 
 
