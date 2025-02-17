@@ -2,10 +2,9 @@
 
 namespace Database\Seeders;
 
+use App\Models\Employee;
 use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class UserSeeder extends Seeder
@@ -15,13 +14,6 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-        
-        // Insert data into divisions table
-        DB::table('divisions')->insert([
-            ['id' => 1, 'name' => 'PT'],
-            ['id' => 2, 'name' => 'Yay'],
-        ]);
-
         // Data for users and employees
         $users = [
             [
@@ -40,14 +32,14 @@ class UserSeeder extends Seeder
 
         foreach ($users as $user) {
             // Insert user and get ID
-            $userId = DB::table('users')->insertGetId([
+            $userId = User::insertGetId([
                 'name' => $user['name'],
                 'email' => $user['email'],
                 'password' => $user['password'],
             ]);
 
             // Insert employee linked to user and division
-            DB::table('employees')->insert([
+            Employee::insert([
                 'userid' => $userId,
                 'division_id' => $user['division_id'],
             ]);

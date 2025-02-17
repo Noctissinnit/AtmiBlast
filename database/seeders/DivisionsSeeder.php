@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Division;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -12,6 +13,9 @@ class DivisionsSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        Division::insert([
+            ['name' => 'PT'],
+            ['name' => 'Yay'],
+        ]);
     }
 }

@@ -13,6 +13,49 @@
     <!-- Select2 -->
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        window.alert = (value) => {
+            if (typeof value === "string") {
+                Swal.fire({
+                    title: "Information",
+                    text: value,
+                    icon: "info"
+                });
+            } else {
+                Swal.fire(value);
+            }
+        }
+
+        window.error = (value) => {
+            alert({
+                title: 'Error',
+                text: value,
+                icon: 'error'
+            });
+        }
+
+        window.success = (value) => {
+            alert({
+                title: 'Success',
+                text: value,
+                icon: 'success'
+            });
+        }
+        $(document).ready(() => {
+            @if ($errors->any())
+                error("{{ $errors->first() }}");
+            @endif
+            @if (session()->has('error'))
+                error("{{ session('error') }}");
+            @endif
+
+            @if (session()->has('success'))
+                success("{{ session('success') }}");
+            @endif
+        });
+    </script>
     @yield('head')
 </head>
 

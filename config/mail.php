@@ -1,6 +1,6 @@
 <?php
 
-return [
+$configs = [
 
     /*
     |--------------------------------------------------------------------------
@@ -33,18 +33,23 @@ return [
     |
     */
 
-    'mailers' => [
-        'smtp' => [
-            'transport' => 'smtp',
-            'url' => env('MAIL_URL'),
-            'host' => env('MAIL_HOST', 'smtp.mailgun.org'),
-            'port' => env('MAIL_PORT', 587),
-            'encryption' => env('MAIL_ENCRYPTION', 'tls'),
-            'username' => env('MAIL_USERNAME'),
-            'password' => env('MAIL_PASSWORD'),
-            'timeout' => null,
-            'local_domain' => env('MAIL_EHLO_DOMAIN'),
-        ],
+    'mailers' =>
+    [
+        'smtp' => (function () {
+            $username = explode(',', env('MAIL_USERNAME'))[0];
+            $password = explode(',', env('MAIL_PASSWORD'))[0];
+            return [
+                'transport' => 'smtp',
+                'url' => env('MAIL_URL'),
+                'host' => env('MAIL_HOST', 'smtp.mailgun.org'),
+                'port' => env('MAIL_PORT', 587),
+                'encryption' => env('MAIL_ENCRYPTION', 'tls'),
+                'username' => $username == 'null' ? null : $username,
+                'password' => $password == 'null' ? null : $password,
+                'timeout' => null,
+                'local_domain' => env('MAIL_EHLO_DOMAIN'),
+            ];
+        })(),
 
         'ses' => [
             'transport' => 'ses',
@@ -130,5 +135,22 @@ return [
             resource_path('views/vendor/mail'),
         ],
     ],
-
 ];
+
+foreach(range(0, 4) as $i){
+    $username = explode(',', env('MAIL_USERNAME'))[$i];
+    $password = explode(',', env('MAIL_PASSWORD'))[$i];
+    $configs['mailers']["$i"] = [
+        'transport' => 'smtp',
+        'url' => env('MAIL_URL'),
+        'host' => env('MAIL_HOST', 'smtp.mailgun.org'),
+        'port' => env('MAIL_PORT', 587),
+        'encryption' => env('MAIL_ENCRYPTION', 'tls'),
+        'username' => $username == 'null' ? null : $username,
+        'password' => $password == 'null' ? null : $password,
+        'timeout' => null,
+        'local_domain' => env('MAIL_EHLO_DOMAIN'),
+    ];
+}
+
+return $configs;
