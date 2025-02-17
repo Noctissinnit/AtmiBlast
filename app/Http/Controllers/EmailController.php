@@ -144,14 +144,10 @@ class EmailController extends Controller
             'subject' => $request->subject,
             'message' => $request->message,
         ];
-
-        // Ambil karyawan yang ada di unit dan divisi yang dipilih
-        $employees = Employee::where('division_id', $request->division_id)
-                            ->where('unit_karya_id', $request->unit_id)
-                            ->get();
         
-        // Ambil semua email karyawan yang tidak kosong
-        $emails = $employees->pluck('email')->filter()->toArray();
+        $emails = Employee::where('division_id', $request->division_id)
+                            ->where('unit_karya_id', $request->unit_id)
+                            ->pluck('email')->filter()->toArray();
         
         // Cek apakah ada email yang valid
         if (empty($emails)) {
