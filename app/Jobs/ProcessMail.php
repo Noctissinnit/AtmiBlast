@@ -36,7 +36,6 @@ class ProcessMail implements ShouldQueue
         foreach (splitEmails($this->emails) as $i => $sendEmails) {
             foreach ($sendEmails as $email) {
                 if($email === null) continue;
-                Log::debug("Sending email as $i to ".$email);
                 Mail::mailer("$i")->to($email)->send($this->mailable);
             }
         }
