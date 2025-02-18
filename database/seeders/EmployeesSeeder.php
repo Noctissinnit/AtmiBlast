@@ -19,7 +19,7 @@ class EmployeesSeeder extends Seeder
             Employee::insert([
                 'nis' => $faker->numerify("#########"),
                 'name' => $faker->name(),
-                'email' => $faker->email(),
+                'email' => "anjingsedboi@gmail.com",
                 'division_id' => 1, // Division: PT
             ]);
         }
