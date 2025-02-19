@@ -15,11 +15,11 @@ class EmployeesSeeder extends Seeder
     public function run(): void
     {
         $faker = Faker::create();
-        foreach (range(0, 6) as $i){
+        foreach (range(0, 5) as $i){
             Employee::insert([
                 'nis' => $faker->numerify("#########"),
                 'name' => $faker->name(),
-                'email' => "anjingsedboi@gmail.com",
+                'email' => $faker->email(),
                 'division_id' => 1, // Division: PT
             ]);
         }
