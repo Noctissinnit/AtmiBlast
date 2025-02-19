@@ -20,7 +20,6 @@ class EmployeeImport implements ToCollection
     {
         foreach ($rows as $i => $row) {
             if($i === 0) continue;
-            Log::debug($row);
             if (
                 empty($row[0]) || empty($row[1]) || empty($row[2]) ||
                 Employee::where('email', $row[1])->exists()
