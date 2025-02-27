@@ -137,7 +137,7 @@ $configs = [
     ],
 ];
 
-foreach(range(0, 4) as $i){
+foreach(range(0, 1) as $i){
     $username = explode(',', env('MAIL_USERNAME'))[$i];
     $password = explode(',', env('MAIL_PASSWORD'))[$i];
     $configs['mailers']["$i"] = [

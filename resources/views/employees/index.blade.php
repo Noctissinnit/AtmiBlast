@@ -51,7 +51,7 @@
                 <th>Unit Karya</th>
                 <th>Actions</th>
             </tr>
-        </thead>
+         </thead>
         <tbody>
             @forelse($employees as $employee)
             <tr>

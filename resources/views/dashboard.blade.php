@@ -49,6 +49,24 @@
     }
 </style>
 
+<script>
+       function checkQueueStatus() {
+        $.get('/queue-status', function (data) {
+            if (data.jobs > 0) {
+                $('#queue-loading').show(); // Tampilkan loading jika masih ada antrian
+            } else {
+                $('#queue-loading').hide(); // Sembunyikan jika queue sudah kosong
+            }
+        });
+    }
+
+    // Jalankan fungsi saat halaman dimuat dan refresh setiap 5 detik
+    $(document).ready(function () {
+        checkQueueStatus();
+        setInterval(checkQueueStatus, 5000);
+    });
+</script>
+
 @if (session('success'))
     <div class="alert alert-success alert-dismissible fade show" role="alert">
         {{ session('success') }}
@@ -62,6 +80,7 @@
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 @endif
+
 
 
 <div class="row">
@@ -97,4 +116,13 @@
         </div>
     </div>
 </div>
+
+<div id="queue-loading" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
+    <div class="bg-white p-6 rounded-lg shadow-lg flex flex-col items-center space-y-4">
+        <div class="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500 border-solid"></div>
+        <p class="text-lg font-semibold text-gray-700">📩 Sedang mengirim email...</p>
+        <p class="text-sm text-gray-500">Mohon tunggu sebentar hingga proses selesai</p>
+    </div>
+</div>
+
 @endsection
