@@ -138,8 +138,8 @@ $configs = [
 ];
 
 $usernames = explode(',', env('MAIL_USERNAME'));
-foreach(range(0, count($usernames)) as $i){
-    $username = $username[$i];
+foreach(range(0, count($usernames) - 1) as $i){
+    $username = $usernames[$i];
     $password = explode(',', env('MAIL_PASSWORD'));
     // Assume the password is the same if it's only one
     if(count($password) > 1) $password = env('MAIL_PASSWORD');
