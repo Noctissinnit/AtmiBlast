@@ -8,6 +8,7 @@ use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\UnitKaryaController;
 use App\Models\Employee;
 use App\Models\UnitKarya;
+use Illuminate\Support\Facades\DB;
 
 // Route Homepage
 Route::get('/', function () {
@@ -65,6 +66,12 @@ Route::middleware('auth')->group(function () {
     Route::get('/get-units/{division_id}', function ($division_id) {
         $units = UnitKarya::where('division_id', $division_id)->get();
         return response()->json(['units' => $units]);
+    });
+    
+    //Route fungsi loading queue
+    Route::get('/queue-status', function () {
+        $jobCount = DB::table('jobs')->count();
+        return response()->json(['jobs' => $jobCount]);
     });
 
 });

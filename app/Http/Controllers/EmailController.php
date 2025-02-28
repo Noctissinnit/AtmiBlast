@@ -114,7 +114,7 @@ class EmailController extends Controller
             $pdf
         ));
         
-        return redirect()->route('dashboard')->with('success', 'Email sedang diproses ke semua karyawan dalam unit karya.');
+        return redirect()->route('dashboard')->with('success', 'Email sedang diproses ke semua karyawan dalam Divisi.');
     }
 
     /**
