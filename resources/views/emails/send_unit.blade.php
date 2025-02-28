@@ -32,6 +32,7 @@
         <label for="message">Pesan</label>
         <textarea name="message" class="form-control" rows="5" required></textarea>
     </div>
+    @include('emails.select-multiple-emails')
     <div class="form-group">
         <label for="pdf">Lampiran (PDF)</label>
         <input type="file" name="pdf" class="form-control">

@@ -28,6 +28,7 @@ class EmailController extends Controller
             'employee_id' => 'required|exists:employees,id',
             'subject' => 'required|string',
             'message' => 'required|string',
+            'email' => 'required|numeric',
             'pdf' => 'nullable|mimes:pdf|max:2048',
         ]);
 
@@ -53,7 +54,7 @@ class EmailController extends Controller
         //     'isReadable' => is_readable($pdfFullPath)
         // ]);
         // Kirim email dengan lampiran PDF jika ada
-        Mail::to($employee->user->email ?? $employee->email)->send(new SendEmployeeEmail(
+        Mail::mailer($request->email)->to($employee->user->email ?? $employee->email)->send(new SendEmployeeEmail(
             $data['subject'], 
             $data['message'],
             $pdf
@@ -82,6 +83,7 @@ class EmailController extends Controller
             'division_id' => 'required|exists:divisions,id',
             'subject' => 'required|string',
             'message' => 'required|string',
+            'email' => 'required|array|min:1',
             'pdf' => 'nullable|mimes:pdf|max:2048',
         ]);
         
@@ -108,7 +110,7 @@ class EmailController extends Controller
         //     $data['message'], 
         //     $pdf
         // ));
-        ProcessMail::dispatch($emails, new SendEmployeeEmail(
+        ProcessMail::dispatch($emails, $request->email, new SendEmployeeEmail(
             $data['subject'],
             $data['message'],
             $pdf
@@ -136,6 +138,7 @@ class EmailController extends Controller
             'unit_id' => 'required|exists:unit_karyas,id',
             'subject' => 'required|string',
             'message' => 'required|string',
+            'email' => 'required|array|min:1',
             'pdf' => 'nullable|mimes:pdf|max:2048', // Menambahkan file pdf sebagai opsional
         ]);
 
@@ -165,7 +168,7 @@ class EmailController extends Controller
         //     $data['message'], 
         //     $pdf
         // ));
-        ProcessMail::dispatch($emails, new SendEmployeeEmail(
+        ProcessMail::dispatch($emails, $request->email, new SendEmployeeEmail(
             $data['subject'],
             $data['message'],
             $pdf

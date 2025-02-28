@@ -15,15 +15,18 @@ class ProcessMail implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     private array $emails;
+    private array $senders;
     private Mailable $mailable;
     /**
      * Create a new job instance.
      */
     public function __construct(
         array $emails,
+        array $senders,
         Mailable $mailable
     ) {
         $this->emails = $emails;
+        $this->senders = $senders;
         $this->mailable = $mailable;
     }
 
@@ -32,18 +35,17 @@ class ProcessMail implements ShouldQueue
      */
     public function handle(): void
     {
-        foreach (splitEmails($this->emails) as $i => $sendEmails) {
+        foreach (splitEmails($this->emails, count($this->senders)) as $i => $sendEmails) {
             foreach ($sendEmails as $email) {
                 if($email === null) continue;
-                Mail::mailer("$i")->to($email)->send($this->mailable);
+                Mail::mailer($this->senders[$i])->to($email)->send($this->mailable);
             }
         }
     }
 }
 
-function splitEmails(array $array)
+function splitEmails(array $array, int $senderCount)
 {
-    $senderCount = count(explode(',', env('MAIL_USERNAME')));
     $length = count($array);
     $baseSize = (int) ($length / $senderCount);
     $remainder = $length % $senderCount;

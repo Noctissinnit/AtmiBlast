@@ -37,6 +37,8 @@
         <textarea name="message" id="message" class="form-control" rows="5" required></textarea>
     </div>
 
+    @include('emails.select-email')
+
     <div class="form-group">
         <label for="pdf">Lampirkan PDF (Opsional)</label>
         <input type="file" name="pdf" id="pdf" class="form-control" accept="application/pdf">
