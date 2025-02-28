@@ -139,7 +139,10 @@ $configs = [
 
 foreach(range(0, 4) as $i){
     $username = explode(',', env('MAIL_USERNAME'))[$i];
-    $password = explode(',', env('MAIL_PASSWORD'))[$i];
+    $password = explode(',', env('MAIL_PASSWORD'));
+    // Assume the password is the same if it's only one
+    if(count($password) > 1) $password = env('MAIL_PASSWORD');
+    else $password = $password[0];
     $configs['mailers']["$i"] = [
         'transport' => 'smtp',
         'url' => env('MAIL_URL'),

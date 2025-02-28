@@ -8,7 +8,6 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 
 class ProcessMail implements ShouldQueue
@@ -44,12 +43,13 @@ class ProcessMail implements ShouldQueue
 
 function splitEmails(array $array)
 {
+    $senderCount = count(explode(',', env('MAIL_USERNAME')));
     $length = count($array);
-    $baseSize = (int) ($length / 5);
-    $remainder = $length % 5;
+    $baseSize = (int) ($length / $senderCount);
+    $remainder = $length % $senderCount;
 
     $sizes = [];
-    for ($i = 0; $i < 5; $i++) {
+    for ($i = 0; $i < $senderCount; $i++) {
         $sizes[] = $i < $remainder ? $baseSize + 1 : $baseSize;
     }
 
