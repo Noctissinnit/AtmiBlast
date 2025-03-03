@@ -9,6 +9,7 @@ use App\Http\Controllers\UnitKaryaController;
 use App\Models\Employee;
 use App\Models\UnitKarya;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Request;
 
 // Route Homepage
 Route::get('/', function () {
@@ -43,6 +44,11 @@ Route::middleware('auth')->group(function () {
 
     // Route Import Excel untuk Employee
     Route::post('/employees/import', [EmployeeController::class, 'importExcel'])->name('employees.import');
+
+    // Route Search Employee
+    
+
+
 
     // Route Email
     Route::get('/email/individual', [EmailController::class, 'showIndividualForm'])->name('email.individual');
