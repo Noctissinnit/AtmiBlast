@@ -1,9 +1,9 @@
-<div class="form-group">
+<div class="form-group mb-3">
     <label for="email">Email Pengirim</label>
-    <select class="form-control" name="email">
+    <select class="form-control" name="mail_id">
         <option>Pilih Email</option>
-        @foreach(explode(',', env('MAIL_USERNAME')) as $email)
-            <option value="{{ $loop->index }}">{{ empty($email) ? 'Tanpa Nama' : $email }}</option>
+        @foreach($mails as $mail)
+            <option value="{{ $mail->id }}">{{ $mail->email }}</option>
         @endforeach
     </select>
 </div>

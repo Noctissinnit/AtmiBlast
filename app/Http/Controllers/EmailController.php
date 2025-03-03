@@ -8,6 +8,7 @@ use App\Models\Division;
 use App\Models\Employee;
 use App\Models\MailConfig;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 
 class EmailController extends Controller
@@ -24,10 +25,7 @@ class EmailController extends Controller
             'password' => 'nullable|string',
         ]);
 
-        MailConfig::insert([
-            'email' => $request->email,
-            'password' => $request->password,
-        ]);
+        MailConfig::insert($request->only('email', 'password'));
         return back()->with('success', 'Email berhasil ditambahkan!');
     }
 
@@ -37,7 +35,8 @@ class EmailController extends Controller
     public function showIndividualForm()
     {
         $employees = Employee::all(); // Ambil semua karyawan
-        return view('emails.send_individual', compact('employees'));
+        $mails = MailConfig::all();
+        return view('emails.send_individual', compact('employees', 'mails'));
     }
 
     // Fungsi untuk mengirim email individu
@@ -47,7 +46,7 @@ class EmailController extends Controller
             'employee_id' => 'required|exists:employees,id',
             'subject' => 'required|string',
             'message' => 'required|string',
-            'email' => 'required|numeric',
+            'mail_id' => 'required|string',
             'pdf' => 'nullable|mimes:pdf|max:2048',
         ]);
 
@@ -75,7 +74,7 @@ class EmailController extends Controller
         // Kirim email dengan lampiran PDF jika ada
 
         setMailConfigs();
-        Mail::mailer($request->email)->to($employee->user->email ?? $employee->email)->send(new SendEmployeeEmail(
+        Mail::mailer($request->mail_id)->to($employee->user->email ?? $employee->email)->send(new SendEmployeeEmail(
             $data['subject'],
             $data['message'],
             $pdf
@@ -217,10 +216,10 @@ function setMailConfigs()
         'local_domain' => env('MAIL_EHLO_DOMAIN'),
     ]);
 
-    foreach ($configs as $i => $config) {
-        $username = $config->username;
+    foreach ($configs as $config) {
+        $username = $config->email;
         $password = $config->password;
-        config()->set("mail.mailers.smtp.$i", [
+        config()->set("mail.mailers." . $config->id, [
             'transport' => 'smtp',
             'url' => env('MAIL_URL'),
             'host' => env('MAIL_HOST', 'smtp.mailgun.org'),
