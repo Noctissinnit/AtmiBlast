@@ -1,6 +1,6 @@
 <?php
 
-$configs = [
+return [
 
     /*
     |--------------------------------------------------------------------------
@@ -35,22 +35,6 @@ $configs = [
 
     'mailers' =>
     [
-        'smtp' => (function () {
-            $username = explode(',', env('MAIL_USERNAME'))[0];
-            $password = explode(',', env('MAIL_PASSWORD'))[0];
-            return [
-                'transport' => 'smtp',
-                'url' => env('MAIL_URL'),
-                'host' => env('MAIL_HOST', 'smtp.mailgun.org'),
-                'port' => env('MAIL_PORT', 587),
-                'encryption' => env('MAIL_ENCRYPTION', 'tls'),
-                'username' => $username == 'null' ? null : $username,
-                'password' => $password == 'null' ? null : $password,
-                'timeout' => null,
-                'local_domain' => env('MAIL_EHLO_DOMAIN'),
-            ];
-        })(),
-
         'ses' => [
             'transport' => 'ses',
         ],
@@ -136,25 +120,3 @@ $configs = [
         ],
     ],
 ];
-
-$usernames = explode(',', env('MAIL_USERNAME'));
-foreach(range(0, count($usernames) - 1) as $i){
-    $username = $usernames[$i];
-    $password = explode(',', env('MAIL_PASSWORD'));
-    // Assume the password is the same if it's only one
-    if(count($password) > 1) $password = env('MAIL_PASSWORD');
-    else $password = $password[0];
-    $configs['mailers']["$i"] = [
-        'transport' => 'smtp',
-        'url' => env('MAIL_URL'),
-        'host' => env('MAIL_HOST', 'smtp.mailgun.org'),
-        'port' => env('MAIL_PORT', 587),
-        'encryption' => env('MAIL_ENCRYPTION', 'tls'),
-        'username' => $username == 'null' ? null : $username,
-        'password' => $password == 'null' ? null : $password,
-        'timeout' => null,
-        'local_domain' => env('MAIL_EHLO_DOMAIN'),
-    ];
-}
-
-return $configs;

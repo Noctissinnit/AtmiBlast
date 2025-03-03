@@ -112,7 +112,7 @@
                     <i class="bi bi-plus-circle"></i> <a href="{{ route('units.create') }}"> Tambah Unit Karya</a>
                 </li>
                 <li class="list-group-item">
-                    <i class="bi bi-envelope"></i> <a href="{{ route('setemail') }}"> Set Email Pengirim</a>
+                    <i class="bi bi-envelope"></i> <a href="{{ route('email.index') }}"> Tambah Email Pengirim</a>
                 </li>
                 <li class="list-group-item">
                     <strong><i class="bi bi-send"></i> Kirim Email</strong>

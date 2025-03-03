@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DivisionController;
 use App\Http\Controllers\EmailController;
 use App\Http\Controllers\EmployeeController;
@@ -25,13 +26,7 @@ Route::controller(AuthController::class)->group(function () {
 
 // Route Dashboard (Hanya untuk pengguna yang sudah login)
 Route::middleware('auth')->group(function () {
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
-
-    Route::get('/set-email', function () {
-        return view('set_email');
-    })->name('setemail');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     // Route Divisi (CRUD)
     Route::resource('divisions', DivisionController::class);
@@ -63,6 +58,9 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/email/unit', [EmailController::class, 'showUnitForm'])->name('email.unit');
     Route::post('/email/unit', [EmailController::class, 'sendToUnit'])->name('email.sendUnit');
+
+    Route::get('/email', [EmailController::class, 'index'])->name('email.index');
+    Route::post('/email', [EmailController::class, 'store'])->name('email.store');
 
     // API untuk mendapatkan unit karya berdasarkan divisi (untuk AJAX)
     Route::get('/units-by-division/{division_id}', [EmployeeController::class, 'getUnitsByDivision']);
