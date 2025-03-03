@@ -89,6 +89,7 @@
             <li class="list-group-item"><a href="{{ route('divisions.index') }}">Divisi</a></li>
             <li class="list-group-item"><a href="{{ route('employees.index') }}">Karyawan</a></li>
             <li class="list-group-item"><a href="{{ route('units.create') }}">Tambah Unit Karya</a></li>
+            <li class="list-group-item"><a href="{{ route('setemail') }}">Set Email Pengirim</a></li>
             <li class="list-group-item">
                 <strong>Kirim Email</strong>
                 <div class="dropdown">

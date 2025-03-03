@@ -28,6 +28,10 @@ Route::middleware('auth')->group(function () {
         return view('dashboard');
     })->name('dashboard');
 
+    Route::get('/set-email', function () {
+        return view('set_email');
+    })->name('setemail');
+
     // Route Divisi (CRUD)
     Route::resource('divisions', DivisionController::class);
 

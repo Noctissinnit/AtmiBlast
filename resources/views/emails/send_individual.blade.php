@@ -37,7 +37,7 @@
         <textarea name="message" id="message" class="form-control" rows="5" required></textarea>
     </div>
 
-    @include('emails.select-email')
+    {{-- @include('emails.select-email') --}}
 
     <div class="form-group">
         <label for="pdf">Lampirkan PDF (Opsional)</label>
