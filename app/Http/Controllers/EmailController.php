@@ -91,7 +91,8 @@ class EmailController extends Controller
     public function showDivisionForm()
     {
         $divisions = Division::all();
-        return view('emails.send_division', compact('divisions'));
+        $mails = MailConfig::all();
+        return view('emails.send_division', compact('divisions', 'mails'));
     }
 
     /**
@@ -103,7 +104,7 @@ class EmailController extends Controller
             'division_id' => 'required|exists:divisions,id',
             'subject' => 'required|string',
             'message' => 'required|string',
-            'email' => 'required|array|min:1',
+            'mail_ids' => 'required|array|min:1',
             'pdf' => 'nullable|mimes:pdf|max:2048',
         ]);
 
@@ -131,7 +132,7 @@ class EmailController extends Controller
         //     $pdf
         // ));
         setMailConfigs();
-        ProcessMail::dispatch($emails, $request->email, new SendEmployeeEmail(
+        ProcessMail::dispatch($emails, $request->mail_ids, new SendEmployeeEmail(
             $data['subject'],
             $data['message'],
             $pdf
@@ -146,7 +147,8 @@ class EmailController extends Controller
     public function showUnitForm()
     {
         $divisions = Division::with('unit_karyas')->get();
-        return view('emails.send_unit', compact('divisions'));
+        $mails = MailConfig::all();
+        return view('emails.send_unit', compact('divisions', 'mails'));
     }
 
     /**

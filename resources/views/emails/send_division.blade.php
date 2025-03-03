@@ -51,6 +51,8 @@
                             @enderror
                         </div>
 
+                        @include('emails.select-multiple-emails')
+
                         <!-- File PDF (Opsional) -->
                         <div class="mb-3">
                             <label for="pdf" class="form-label">Lampirkan File PDF:</label>

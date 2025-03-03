@@ -1,9 +1,9 @@
 <div class="form-group">
     <label for="email">Email Pengirim</label>
-    @foreach(explode(',', env('MAIL_USERNAME')) as $email)
-        <div>
-            <input type="checkbox" name="email[]" value="{{ $loop->index }}">
-            <span class="ms-1">{{ empty($email) ? 'Tanpa Nama' : $email }}</span>
+    @foreach($mails as $mail)
+        <div class="mb-3">
+            <input type="checkbox" name="mail_ids[]" value="{{ $mail->id }}">
+            <span class="ms-1">{{ $mail->email }}</span>
         </div>
     @endforeach
 </div>
