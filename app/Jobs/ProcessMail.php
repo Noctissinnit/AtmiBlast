@@ -36,6 +36,7 @@ class ProcessMail implements ShouldQueue
      */
     public function handle(): void
     {
+        setMailConfigs();
         foreach (splitEmails($this->emails, count($this->senders)) as $i => $sendEmails) {
             foreach ($sendEmails as $email) {
                 if($email === null) continue;
