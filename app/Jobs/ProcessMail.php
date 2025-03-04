@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Models\MailConfig;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Mail\Mailable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -43,6 +44,40 @@ class ProcessMail implements ShouldQueue
         }
     }
 }
+
+
+function setMailConfigs()
+{
+    $configs = MailConfig::all();
+    config()->set('mail.mailers.smtp', [
+        'transport' => 'smtp',
+        'url' => env('MAIL_URL'),
+        'host' => env('MAIL_HOST', 'smtp.mailgun.org'),
+        'port' => env('MAIL_PORT', 587),
+        'encryption' => env('MAIL_ENCRYPTION', 'tls'),
+        'username' => $configs[0]->email,
+        'password' => $configs[0]->password ?? env('MAIL_PASSWORD'),
+        'timeout' => null,
+        'local_domain' => env('MAIL_EHLO_DOMAIN'),
+    ]);
+
+    foreach ($configs as $config) {
+        $username = $config->email;
+        $password = $config->password;
+        config()->set("mail.mailers." . $config->id, [
+            'transport' => 'smtp',
+            'url' => env('MAIL_URL'),
+            'host' => env('MAIL_HOST', 'smtp.mailgun.org'),
+            'port' => env('MAIL_PORT', 587),
+            'encryption' => env('MAIL_ENCRYPTION', 'tls'),
+            'username' => $username,
+            'password' => $password ?? env('MAIL_PASSWORD'),
+            'timeout' => null,
+            'local_domain' => env('MAIL_EHLO_DOMAIN'),
+        ]);
+    }
+}
+
 
 function splitEmails(array $array, int $senderCount)
 {

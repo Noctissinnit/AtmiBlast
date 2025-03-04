@@ -8,8 +8,9 @@ use App\Models\Division;
 use App\Models\Employee;
 use App\Models\MailConfig;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
+
+use function App\Jobs\setMailConfigs;
 
 class EmailController extends Controller
 {
@@ -131,7 +132,6 @@ class EmailController extends Controller
         //     $data['message'], 
         //     $pdf
         // ));
-        setMailConfigs();
         ProcessMail::dispatch($emails, $request->mail_ids, new SendEmployeeEmail(
             $data['subject'],
             $data['message'],
@@ -191,7 +191,6 @@ class EmailController extends Controller
         //     $data['message'], 
         //     $pdf
         // ));
-        setMailConfigs();
         ProcessMail::dispatch($emails, $request->email, new SendEmployeeEmail(
             $data['subject'],
             $data['message'],
@@ -200,37 +199,5 @@ class EmailController extends Controller
 
         // Kembali dengan notifikasi sukses
         return redirect()->route('dashboard')->with('success', 'Email berhasil dikirim ke semua karyawan dalam unit karya.');
-    }
-}
-
-function setMailConfigs()
-{
-    $configs = MailConfig::all();
-    config()->set('mail.mailers.smtp', [
-        'transport' => 'smtp',
-        'url' => env('MAIL_URL'),
-        'host' => env('MAIL_HOST', 'smtp.mailgun.org'),
-        'port' => env('MAIL_PORT', 587),
-        'encryption' => env('MAIL_ENCRYPTION', 'tls'),
-        'username' => $configs[0]->email,
-        'password' => $configs[0]->password ?? env('MAIL_PASSWORD'),
-        'timeout' => null,
-        'local_domain' => env('MAIL_EHLO_DOMAIN'),
-    ]);
-
-    foreach ($configs as $config) {
-        $username = $config->email;
-        $password = $config->password;
-        config()->set("mail.mailers." . $config->id, [
-            'transport' => 'smtp',
-            'url' => env('MAIL_URL'),
-            'host' => env('MAIL_HOST', 'smtp.mailgun.org'),
-            'port' => env('MAIL_PORT', 587),
-            'encryption' => env('MAIL_ENCRYPTION', 'tls'),
-            'username' => $username,
-            'password' => $password ?? env('MAIL_PASSWORD'),
-            'timeout' => null,
-            'local_domain' => env('MAIL_EHLO_DOMAIN'),
-        ]);
     }
 }
