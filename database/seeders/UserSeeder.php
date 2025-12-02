@@ -20,13 +20,13 @@ class UserSeeder extends Seeder
                 'name' => 'Arthur',
                 'email' => 'arthur1@example.com',
                 'password' => Hash::make('password'), // Replace 'password' with your preferred password
-                'division_id' => 1, // Division: PT
+                'institusi_id' => 1, // Division: PT
             ],
             [
                 'name' => 'Arthur',
                 'email' => 'arthur2@example.com',
                 'password' => Hash::make('password'), // Replace 'password' with your preferred password
-                'division_id' => 2, // Division: Yay
+                'institusi_id' => 2, // Division: Yay
             ],
         ];
 
@@ -41,7 +41,7 @@ class UserSeeder extends Seeder
             // Insert employee linked to user and division
             Employee::insert([
                 'userid' => $userId,
-                'division_id' => $user['division_id'],
+                'institusi_id' => $user['institusi_id'],
             ]);
         }
     }

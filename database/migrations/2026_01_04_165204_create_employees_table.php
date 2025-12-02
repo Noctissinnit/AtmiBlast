@@ -19,8 +19,8 @@ return new class extends Migration
             $table->foreignId('userid')->nullable() // Foreign key to the users table
                 ->constrained('users')
                 ->cascadeOnDelete(); // Optional: Cascade on delete
-            $table->foreignId('division_id') // Foreign key to the divisions table
-                ->constrained('divisions')
+            $table->foreignId('institusi_id') // Foreign key to the divisions table
+                ->constrained('institusis')
                 ->cascadeOnDelete(); 
             $table->foreignId('unit_karya_id')->nullable() // Foreign key to the divisions table
                 ->constrained('unit_karyas')

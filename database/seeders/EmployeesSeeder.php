@@ -19,7 +19,7 @@ class EmployeesSeeder extends Seeder
                 'nis' => $faker->numerify("#########"),
                 'name' => $faker->name(),
                 'email' => $faker->email(),
-                'division_id' => 1, // Division: PT
+                'institusi_id' => 1, // Division: PT
             ]);
         }
     }

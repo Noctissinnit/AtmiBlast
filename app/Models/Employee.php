@@ -11,7 +11,7 @@ class Employee extends Model
 
     use HasFactory;
 
-    protected $fillable = ['name', 'email', 'division_id', 'unit_karya_id'];
+    protected $fillable = ['name', 'email', 'institusi_id', 'unit_karya_id'];
 
     // Relasi ke UnitKarya
     public function unitKarya()
@@ -21,7 +21,7 @@ class Employee extends Model
     
     public function division()
     {
-        return $this->belongsTo(Division::class);
+        return $this->belongsTo(Institusi::class);
     }
 
 

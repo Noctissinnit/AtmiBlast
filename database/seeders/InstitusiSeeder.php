@@ -2,17 +2,18 @@
 
 namespace Database\Seeders;
 
-use App\Models\Division;
+
+use App\Models\Institusi;
 use Illuminate\Database\Seeder;
 
-class DivisionsSeeder extends Seeder
+class InstitusiSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        Division::insert([
+        Institusi::insert([
             ['name' => 'PT'],
             ['name' => 'Yay'],
             ['name' => 'Org'],

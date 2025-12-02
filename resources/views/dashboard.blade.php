@@ -1,74 +1,8 @@
 @extends('layouts.app')
 
-@section('title', 'Dashboard')
 
 @section('head')
-<style>
-    /* Styling Sidebar */
-    .sidebar {
-        background-color: #f8f9fa;
-        padding: 20px;
-        border-radius: 8px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    }
 
-    .sidebar .list-group-item {
-        border: none;
-        font-weight: 500;
-        background: transparent;
-        transition: background 0.3s ease-in-out;
-    }
-
-    .sidebar .list-group-item:hover {
-        background-color: rgba(0, 0, 0, 0.05);
-    }
-
-    .sidebar a {
-        color: #333;
-        text-decoration: none;
-    }
-
-    /* Dashboard Content */
-    .content-section {
-        padding: 20px;
-        border-radius: 8px;
-        background-color: #ffffff;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        animation: fadeIn 0.5s ease-in-out;
-    }
-
-    @keyframes fadeIn {
-        from {
-            opacity: 0;
-            transform: translateY(-10px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-
-    /* Queue Loading Overlay */
-    #queue-loading {
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.5);
-        align-items: center;
-        justify-content: center;
-    }
-
-    .loading-box {
-        background: white;
-        padding: 20px;
-        border-radius: 10px;
-        text-align: center;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    }
-</style>
 
 <script>
     function checkQueueStatus() {
@@ -100,7 +34,7 @@
 <div class="container mt-4">
     <div class="row">
         <!-- Sidebar -->
-        <div class="col-md-3 sidebar">
+        {{-- <div class="col-md-3 sidebar">
             <ul class="list-group">
                 <li class="list-group-item">
                     <i class="bi bi-building"></i> <a href="{{ route('divisions.index') }}"> Divisi</a>
@@ -128,7 +62,7 @@
                     </div>
                 </li>
             </ul>
-        </div>
+        </div> --}}
 
         <!-- Content Section -->
         <div class="col-md-9 content-section">

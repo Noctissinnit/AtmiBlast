@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use SebastianBergmann\CodeCoverage\Report\Xml\Unit;
 
 // app/Models/Division.php
-class Division extends Model
+class Institusi extends Model
 {
     use HasFactory;
 
@@ -23,6 +23,6 @@ class Division extends Model
     // Relasi ke unit_karyas (unit karya)
     public function unit_karyas()
     {
-        return $this->hasMany(UnitKarya::class, 'division_id');
+        return $this->hasMany(UnitKarya::class, 'institusi_id');
     }
 }

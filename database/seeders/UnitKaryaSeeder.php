@@ -14,7 +14,7 @@ class UnitKaryaSeeder extends Seeder
     public function run(): void
     {
         foreach (range(0, 9) as $i) {
-            UnitKarya::insert(['nama_unit_karya' => "Unit Karya $i", 'division_id' => random_int(1, 5)]);
+            UnitKarya::insert(['nama_unit' => "unit $i", 'institusi_id' => random_int(1, 5)]);
         }
     }
 }

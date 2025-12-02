@@ -6,6 +6,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DivisionController;
 use App\Http\Controllers\EmailController;
 use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\InstitusiController;
 use App\Http\Controllers\UnitKaryaController;
 use App\Models\Employee;
 use App\Models\UnitKarya;
@@ -13,14 +14,14 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Request;
 
 // Route Homepage
-Route::get('/', function () {
-    return view('index');
-})->name('homepage');
+// Route::get('/', function () {
+//     return view('index');
+// })->name('homepage');
 
 // Route Auth
 Route::controller(AuthController::class)->group(function () {
-    Route::get('/login', 'loginForm')->name('login');
-    Route::post('/login', 'login')->name('login.post');
+    Route::get('/', 'loginForm')->name('login');
+    Route::post('/', 'login')->name('login.post');
     Route::post('/logout', 'logout')->name('logout');
 });
 
@@ -29,7 +30,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     // Route Divisi (CRUD)
-    Route::resource('divisions', DivisionController::class);
+    Route::resource('institusis', InstitusiController::class);
 
     // Route Employee (CRUD)
     Route::get('/employees', [EmployeeController::class, 'index'])->name('employees.index');
