@@ -19,9 +19,9 @@
         <div class="form-group mb-3">
             <label for="division_id">Pilih Divisi</label>
             <select name="division_id" class="form-control" required>
-                <option value="">Pilih Divisi</option>
-                @foreach($divisions as $division)
-                    <option value="{{ $division->id }}">{{ $division->name }}</option>
+                <option value="">Pilih Institusi</option>
+                @foreach($institusis as $institusi)
+                    <option value="{{ $institusi->id }}">{{ $institusi->name }}</option>
                 @endforeach
             </select>
         </div>

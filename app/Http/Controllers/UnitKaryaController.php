@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Division;
+use App\Models\Institusi;
 use App\Models\UnitKarya;
 use Illuminate\Http\Request;
 
@@ -11,9 +12,9 @@ class UnitKaryaController extends Controller
     // Menampilkan form tambah unit karya
     public function create()
     {
-        $divisions = Division::all(); // Ambil semua divisi
+        $institusis = Institusi::all(); // Ambil semua divisi
         $units = collect(); // Jika tidak ada divisi yang dipilih, unit tetap kosong
-        return view('units.create', compact('divisions', 'units'));
+        return view('units.create', compact('institusis', 'units'));
     }
 
     // Menyimpan unit karya baru ke database
@@ -21,13 +22,13 @@ class UnitKaryaController extends Controller
     {
         $request->validate([
             'nama_unit_karya' => 'required|string|max:255',
-            'division_id' => 'required|exists:divisions,id',
+            'institusi_id' => 'required|exists:divisions,id',
         ]);
     
         // Simpan unit karya
         $unitKarya = UnitKarya::create([
-            'nama_unit_karya' => $request->nama_unit_karya,
-            'division_id' => $request->division_id,
+            'nama_unit' => $request->nama_unit,
+            'institusi_id' => $request->institusi_id,
         ]);
 
         if ($unitKarya) {
@@ -37,10 +38,10 @@ class UnitKaryaController extends Controller
         return back()->with('error', 'Gagal menambahkan unit karya.');
     }
     // Di Controller Anda
-    public function getUnitsByDivision($division_id)
+    public function getUnitsByDivision($institusi_id)
     {
         // Ambil unit karya berdasarkan division_id
-        $units = UnitKarya::where('division_id', $division_id)->get();
+        $units = UnitKarya::where('division_id', $institusi_id)->get();
 
         // Kirim kembali response JSON
         return response()->json($units);

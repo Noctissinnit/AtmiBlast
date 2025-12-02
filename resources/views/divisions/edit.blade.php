@@ -4,7 +4,7 @@
 
 @section('content')
 <h1>Edit Divisi</h1>
-<form action="{{ route('institusi.update', $institusi) }}" method="POST">
+<form action="{{ route('institusis.update', $institusi) }}" method="POST">
     @csrf
     @method('PUT')
     <div class="mb-3">

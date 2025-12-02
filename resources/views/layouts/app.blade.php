@@ -143,7 +143,7 @@
             <!-- Menu Divider -->
             <div class="sidebar-item">Master Data</div>
 
-            <a href="{{ route('divisions.index') }}">
+            <a href="{{ route('institusis.index') }}">
                 <i class="bi bi-building me-2"></i> Divisi
             </a>
 

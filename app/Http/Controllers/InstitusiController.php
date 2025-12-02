@@ -12,7 +12,7 @@ class InstitusiController extends Controller
     public function index()
     {
         $institusis = Institusi::all();
-        return view('divisions.index', compact('divisions'));
+        return view('divisions.index', compact('institusis'));
     }
 
     public function create()
@@ -35,14 +35,14 @@ class InstitusiController extends Controller
         // Membuat Division baru
         Institusi::create($request->only('name'));
 
-        return redirect()->route('institusi.index')->with('success', 'Divisi berhasil ditambahkan.');
+        return redirect()->route('institusis.index')->with('success', 'Divisi berhasil ditambahkan.');
     }
 
     
 
     public function edit(Institusi $institusi)
     {
-        return view('divisions.edit', compact('division'));
+        return view('divisions.edit', compact('institusi'));
     }
 
     public function update(Request $request, Institusi $institusi)
@@ -53,20 +53,20 @@ class InstitusiController extends Controller
 
         $institusi->update($request->all());
 
-        return redirect()->route('institusi.index')->with('success', 'Division updated successfully!');
+        return redirect()->route('institusis.index')->with('success', 'Division updated successfully!');
     }
 
     public function destroy(Institusi $institusi)
     {
         $institusi->delete();
 
-        return redirect()->route('institusi.index')->with('success', 'Division deleted successfully!');
+        return redirect()->route('institusis.index')->with('success', 'Division deleted successfully!');
     }
 
-    public function showUnits(Institusi $institusi)
+    public function units(Institusi $institusi)
     {
         $institusi->load('unit_karyas'); // Mengambil unit_karyas dalam divisi
-        return view('divisions.units', compact('division'));
+        return view('divisions.units', compact('institusi'));
     }
 
 }

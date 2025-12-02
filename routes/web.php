@@ -31,6 +31,8 @@ Route::middleware('auth')->group(function () {
 
     // Route Divisi (CRUD)
     Route::resource('institusis', InstitusiController::class);
+    Route::get('institusis/{institusi}/units', [InstitusiController::class, 'units'])
+    ->name('institusis.units');
 
     // Route Employee (CRUD)
     Route::get('/employees', [EmployeeController::class, 'index'])->name('employees.index');
