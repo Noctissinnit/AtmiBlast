@@ -15,8 +15,8 @@ class UnitKarya extends Model
     public $timestamps = false;
 
     // Relasi ke Division
-    public function division()
+    public function institusi()
     {
-        return $this->belongsTo(Division::class, 'division_id');
+        return $this->belongsTo(Institusi::class, 'division_id');
     }
 }

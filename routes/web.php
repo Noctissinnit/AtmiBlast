@@ -56,7 +56,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/email/division', [EmailController::class, 'sendToDivision'])->name('email.sendDivision');
 
     //Route Melihat Unit karya dalam Divisi
-    Route::get('/divisions/{division}/units', [DivisionController::class, 'showUnits'])->name('divisions.units');
+    Route::get('/divisions/{division}/units', [InstitusiController::class, 'showUnits'])->name('divisions.units');
 
 
     Route::get('/email/unit', [EmailController::class, 'showUnitForm'])->name('email.unit');
@@ -68,9 +68,20 @@ Route::middleware('auth')->group(function () {
     // API untuk mendapatkan unit karya berdasarkan divisi (untuk AJAX)
     Route::get('/units-by-division/{division_id}', [EmployeeController::class, 'getUnitsByDivision']);
 
-    // Route Unit Karya
-    Route::get('/units/create', [UnitKaryaController::class, 'create'])->name('units.create');
-    Route::post('/units', [UnitKaryaController::class, 'store'])->name('units.store');
+    Route::prefix('units')->name('units.')->group(function () {
+        Route::get('/', [UnitKaryaController::class, 'index'])->name('index');
+
+        Route::get('/create', [UnitKaryaController::class, 'create'])->name('create');
+        Route::post('/store', [UnitKaryaController::class, 'store'])->name('store');
+
+        Route::get('/{id}/edit', [UnitKaryaController::class, 'edit'])->name('edit');
+        Route::put('/{id}/update', [UnitKaryaController::class, 'update'])->name('update');
+
+        Route::delete('/{id}/delete', [UnitKaryaController::class, 'destroy'])->name('destroy');
+
+        // Untuk AJAX ambil unit karya per institusi
+        Route::get('/division/{id}', [UnitKaryaController::class, 'getUnitsByDivision']);
+    });
 
     //Route ajax unit karya id
     // web.php (Routes)

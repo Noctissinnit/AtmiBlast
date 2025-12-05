@@ -17,6 +17,13 @@ class UnitKaryaController extends Controller
         return view('units.create', compact('institusis', 'units'));
     }
 
+    public function index()
+    {
+        $units = UnitKarya::with('institusi')->get();
+        return view('units.index', compact('units'));
+    }
+
+
     // Menyimpan unit karya baru ke database
     public function store(Request $request)
     {

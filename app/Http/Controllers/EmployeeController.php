@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Imports\EmployeeImport;
 use App\Models\Division;
 use App\Models\Employee;
+use App\Models\Institusi;
 use App\Models\UnitKarya;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -17,7 +18,7 @@ class EmployeeController extends Controller
 
     public function index()
     {
-        $employees = Employee::with(['division', 'unitKarya'])->get();
+        $employees = Employee::with(['institusi', 'unitKarya'])->get();
         return view('employees.index', compact('employees'));
     }
 
@@ -25,7 +26,7 @@ class EmployeeController extends Controller
     {
          // Ambil semua divisi
         
-        $divisions = Division::all();
+        $divisions = Institusi::all();
 
         // Jika ada divisi yang dipilih sebelumnya, ambil unit karya yang terkait dengan divisi tersebut
         $units = collect();

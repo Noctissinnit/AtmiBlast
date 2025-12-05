@@ -19,7 +19,7 @@ class Employee extends Model
         return $this->belongsTo(UnitKarya::class, 'unit_karya_id');
     }
     
-    public function division()
+    public function institusi()
     {
         return $this->belongsTo(Institusi::class);
     }

@@ -6,6 +6,7 @@ use App\Jobs\ProcessMail;
 use App\Mail\SendEmployeeEmail;
 use App\Models\Division;
 use App\Models\Employee;
+use App\Models\Institusi;
 use App\Models\MailConfig;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
@@ -91,7 +92,7 @@ class EmailController extends Controller
      */
     public function showDivisionForm()
     {
-        $divisions = Division::all();
+        $divisions = Institusi::all();
         $mails = MailConfig::all();
         return view('emails.send_division', compact('divisions', 'mails'));
     }
@@ -102,7 +103,7 @@ class EmailController extends Controller
     public function sendToDivision(Request $request)
     {
         $request->validate([
-            'division_id' => 'required|exists:divisions,id',
+            'institusi_id' => 'required|exists:institusis,id',
             'subject' => 'required|string',
             'message' => 'required|string',
             'mail_ids' => 'required|array|min:1',
@@ -114,7 +115,7 @@ class EmailController extends Controller
             'message' => $request->message,
         ];
 
-        $emails = Employee::where('division_id', $request->division_id)->pluck('email')->filter()->toArray();
+        $emails = Employee::where('institusi_id', $request->division_id)->pluck('email')->filter()->toArray();
 
         // Cek apakah ada email tidak kosong
         if (empty($emails)) {
@@ -146,7 +147,7 @@ class EmailController extends Controller
      */
     public function showUnitForm()
     {
-        $divisions = Division::with('unit_karyas')->get();
+        $divisions = Institusi::with('unit_karyas')->get();
         $mails = MailConfig::all();
         return view('emails.send_unit', compact('divisions', 'mails'));
     }
@@ -157,7 +158,7 @@ class EmailController extends Controller
     public function sendToUnit(Request $request)
     {
         $request->validate([
-            'division_id' => 'required|exists:divisions,id',
+            'institusi_id' => 'required|exists:institusis,id',
             'unit_id' => 'required|exists:unit_karyas,id',
             'subject' => 'required|string',
             'message' => 'required|string',
@@ -171,7 +172,7 @@ class EmailController extends Controller
             'message' => $request->message,
         ];
 
-        $emails = Employee::where('division_id', $request->division_id)
+        $emails = Employee::where('institusi_id', $request->division_id)
             ->where('unit_karya_id', $request->unit_id)
             ->pluck('email')->filter()->toArray();
 
