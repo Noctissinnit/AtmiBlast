@@ -33,6 +33,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('institusis', InstitusiController::class);
     Route::get('institusis/{institusi}/units', [InstitusiController::class, 'units'])
     ->name('institusis.units');
+    
 
     // Route Employee (CRUD)
     Route::get('/employees', [EmployeeController::class, 'index'])->name('employees.index');
@@ -56,7 +57,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/email/division', [EmailController::class, 'sendToDivision'])->name('email.sendDivision');
 
     //Route Melihat Unit karya dalam Divisi
-    Route::get('/divisions/{division}/units', [DivisionController::class, 'showUnits'])->name('divisions.units');
+    Route::get('/divisions/{division}/units', [InstitusiController::class, 'showUnits'])->name('divisions.units');
 
 
     Route::get('/email/unit', [EmailController::class, 'showUnitForm'])->name('email.unit');
@@ -71,6 +72,10 @@ Route::middleware('auth')->group(function () {
     // Route Unit Karya
     Route::get('/units/create', [UnitKaryaController::class, 'create'])->name('units.create');
     Route::post('/units', [UnitKaryaController::class, 'store'])->name('units.store');
+    Route::get('/units', [UnitKaryaController::class, 'index'])->name('units.index');
+    Route::delete('/units/{unit}', [UnitKaryaController::class, 'destroy'])->name('units.destroy');
+
+
 
     //Route ajax unit karya id
     // web.php (Routes)

@@ -151,8 +151,8 @@
                 <i class="bi bi-people me-2"></i> Karyawan
             </a>
 
-            <a href="{{ route('units.create') }}">
-                <i class="bi bi-plus-circle me-2"></i> Tambah Unit Karya
+            <a href="{{ route('units.index') }}">
+                <i class="bi bi-collection me-2"></i> Unit Karya
             </a>
 
             <a href="{{ route('email.index') }}">
