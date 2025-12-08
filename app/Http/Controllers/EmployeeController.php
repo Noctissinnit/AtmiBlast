@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Imports\EmployeeImport;
 use App\Models\Division;
 use App\Models\Employee;
+use App\Models\Institusi;
 use App\Models\UnitKarya;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -17,7 +18,7 @@ class EmployeeController extends Controller
 
     public function index()
     {
-        $employees = Employee::with(['division', 'unitKarya'])->get();
+        $employees = Employee::with(['institusi', 'unitKarya'])->get();
         return view('employees.index', compact('employees'));
     }
 
@@ -25,16 +26,16 @@ class EmployeeController extends Controller
     {
          // Ambil semua divisi
         
-        $divisions = Division::all();
+        $institusis = Institusi::all();
 
         // Jika ada divisi yang dipilih sebelumnya, ambil unit karya yang terkait dengan divisi tersebut
         $units = collect();
-        if (old('division_id')) {
-            $units = UnitKarya::where('division_id', old('division_id'))->get();
+        if (old('institusi_id')) {
+            $units = UnitKarya::where('institusi_id', old('institusi_id'))->get();
         }
 
         // Mengirim data divisi dan unit karya ke tampilan
-        return view('employees.create', compact('divisions', 'units'));
+        return view('employees.create', compact('institusis', 'units'));
 
     }
 
@@ -43,7 +44,7 @@ class EmployeeController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:employees',
-            'division_id' => 'required|exists:divisions,id',
+            'institusi_id' => 'required|exists:institusi,id',
             'unit_karya_id' => 'required|exists:unit_karyas,id',
         ]);
 
@@ -51,7 +52,7 @@ class EmployeeController extends Controller
         Employee::create([
             'name' => $request->name,
             'email' => $request->email,
-            'division_id' => $request->division_id,
+            'institusi_id' => $request->institusi_id,
             'unit_karya_id' => $request->unit_karya_id,
         ]);
 

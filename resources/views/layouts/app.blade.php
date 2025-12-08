@@ -144,7 +144,7 @@
             <div class="sidebar-item">Master Data</div>
 
             <a href="{{ route('institusis.index') }}">
-                <i class="bi bi-building me-2"></i> Divisi
+                <i class="bi bi-building me-2"></i> Institusi
             </a>
 
             <a href="{{ route('employees.index') }}">

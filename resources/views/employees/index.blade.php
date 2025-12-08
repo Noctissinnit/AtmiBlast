@@ -74,7 +74,7 @@
                         <th>#</th>
                         <th>Name</th>
                         <th>Email</th>
-                        <th>Division</th>
+                        <th>Institusi</th>
                         <th>Unit Karya</th>
                         <th>Actions</th>
                     </tr>
@@ -85,7 +85,7 @@
                         <td>{{ $loop->iteration }}</td>
                         <td>{{ $employee->user->name ?? $employee->name ?? '' }}</td>
                         <td>{{ $employee->user->email ?? $employee->email ?? '' }}</td>
-                        <td>{{ $employee->division->name }}</td>
+                        <td>{{ $employee->institusi->name }}</td>
                         <td>{{ $employee->unitKarya->nama_unit_karya ?? 'No Unit Karya' }}</td>
                         <td>
                             <form action="{{ route('employees.destroy', $employee->id) }}" method="POST" class="d-inline">

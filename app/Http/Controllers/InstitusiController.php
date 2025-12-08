@@ -12,24 +12,24 @@ class InstitusiController extends Controller
     public function index()
     {
         $institusis = Institusi::all();
-        return view('divisions.index', compact('institusis'));
+        return view('institusi.index', compact('institusis'));
     }
 
     public function create()
     {
-        return view('divisions.create');
+        return view('institusi.create');
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|string|max:255|unique:divisions,name',
+            'name' => 'required|string|max:255|unique:institusi,name',
         ]);
 
-        // Cek apakah tabel divisions kosong
+        // Cek apakah tabel institusi kosong
         if (Institusi::count() === 0) {
             // Reset auto-increment ke 1
-            DB::statement('ALTER TABLE divisions AUTO_INCREMENT = 1');
+            DB::statement('ALTER TABLE institusi AUTO_INCREMENT = 1');
         }
 
         // Membuat Division baru
@@ -42,13 +42,13 @@ class InstitusiController extends Controller
 
     public function edit(Institusi $institusi)
     {
-        return view('divisions.edit', compact('institusi'));
+        return view('institusi.edit', compact('institusi'));
     }
 
     public function update(Request $request, Institusi $institusi)
     {
         $request->validate([
-            'name' => 'required|unique:divisions,name,' . $institusi->id . '|max:255',
+            'name' => 'required|unique:institusi,name,' . $institusi->id . '|max:255',
         ]);
 
         $institusi->update($request->all());
@@ -66,7 +66,7 @@ class InstitusiController extends Controller
     public function units(Institusi $institusi)
     {
         $institusi->load('unit_karyas'); // Mengambil unit_karyas dalam divisi
-        return view('divisions.units', compact('institusi'));
+        return view('institusi.units', compact('institusi'));
     }
 
 }
